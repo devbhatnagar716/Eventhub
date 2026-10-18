@@ -46,6 +46,18 @@ It covers the full manual testing checklist: creating, listing and filtering
 events, creating a reservation, the overbooking rejection, cancellation,
 filtering reservations by `event_id`, and the middleware log line.
 
+Two offline checks are included as well, for machines where the dependencies
+cannot be installed. `verify_logic.py` stubs the Django/DRF surface and drives
+the real serializers, views and middleware against an in-memory store;
+`verify_migration.py` compares `0001_initial.py` against `models.py` field by
+field, standing in for `makemigrations --check`. Neither is a replacement for
+`manage.py test`.
+
+```bash
+python verify_logic.py                       # 64 assertions
+python verify_migration.py                   # migration drift check
+```
+
 ## Endpoints
 
 All endpoints are unauthenticated and accept/return JSON.
